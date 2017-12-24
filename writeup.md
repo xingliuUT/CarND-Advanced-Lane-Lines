@@ -16,8 +16,8 @@ The goals / steps of this project are the following:
 [//]: # (Image References)
 
 [image1]: ./output_images/camera_calibration.jpg "Undistorted"
-[image2]: ./output_images/straight_lines2_undist.jpg "Road Transformed"
-[image3]: ./examples/binary_combo_example.jpg "Binary Example"
+[image2]: ./output_images/test1_undist.jpg "Road Transformed"
+[image3]: ./output_images/test2_binary.jpg "Binary Example"
 [image4]: ./examples/warped_straight_lines.jpg "Warp Example"
 [image5]: ./examples/color_fit_lines.jpg "Fit Visual"
 [image6]: ./examples/example_output.jpg "Output"
@@ -51,13 +51,15 @@ I then used the output `objpoints` and `imgpoints` to compute the camera calibra
 
 #### 1. Provide an example of a distortion-corrected image.
 
-To demonstrate this step, I applied the camera calibration matrix and distortion coefficients computed in the previous step to the `straight_lines2.jpg` test image using the `cv2.undistort()` funtion and obtained the following result:
+To demonstrate this step, I applied the camera calibration matrix and distortion coefficients computed in the previous step to the `./test_images/test1.jpg` test image using the `cv2.undistort()` funtion and obtained the following result:
 
 ![alt text][image2]
 
-#### 2. Describe how (and identify where in your code) you used color transforms, gradients or other methods to create a thresholded binary image.  Provide an example of a binary image result.
+#### 2. Describe how (and identify where in your code) you used color transforms, gradients or other methods to create a thresholded binary image.  
 
-I used a combination of color and gradient thresholds to generate a binary image (thresholding steps at lines # through # in `another_file.py`).  Here's an example of my output for this step.  (note: this is not actually from one of the test images)
+I used a combination of color and gradient thresholds to generate a binary image. Function `get_binary` contains the steps I took. First, I convert the image from BGR color space into HLS color space using the `hls_select` function. For the H-channel, I applied a threshold of `(20, 100)`. For the L- and S-channel, I didn't apply a threshold but used its raw value as input to the gradient thresholding for the next step. Next, I apply perspective transform to focus on the region of the graph where the road is. I will describe the details of this step in the next point. Lastly, I apply Sobel gradient thresholding in the x-direction using the `abs_sobel_thresh` function. The two images that I apply grad-x thresholding on are the L- and S- channel layers and I use a kernel size of 21 and threshold values `(15, 100)`. 
+
+The output binary image is a combination of the pixels found in H-channel color thresholding, the S- and L-channel Sobel grad-x thresholding. Here's an example of my output for this step.
 
 ![alt text][image3]
 

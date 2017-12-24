@@ -104,7 +104,9 @@ Fitting lane lines with a 2nd order polynomial of the `./test_images/test2.jpg` 
 
 #### 5. Describe how (and identify where in your code) you calculated the radius of curvature of the lane and the position of the vehicle with respect to center.
 
-I did this in lines # through # in my code in `my_other_file.py`
+I calculated the radius of curvature of the lane and the position of the vehicle with respect to the lane center in the function `get_curvature()` in the IPython notebook under the title `2.6 Calculate Curvature and Center`. I made use of the pixel to meters conversion in x and y (3.7 meters per 700 pixels in x and 30 meters per 720 pixels in y). After converting the polynomial into the unit of meters, I use the formula to compute the curvature radius according to [this blog](https://www.intmath.com/applications-differentiation/8-radius-curvature.php). I take the mean of the radius independently computed from left and right lane as the output curvature radius.
+
+For the position of the vehicle with respect to the lane center, I assume that the camera is in the middle of an image. I find the average position of the two lanes when they cross the bottom of the image and take that as the center of the lane. Finally, I took the difference in pixels of the position of the camera and the lane center and convert into meters.
 
 #### 6. Provide an example image of your result plotted back down onto the road such that the lane area is identified clearly.
 

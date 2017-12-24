@@ -18,7 +18,7 @@ The goals / steps of this project are the following:
 [image1]: ./output_images/camera_calibration.jpg "Undistorted"
 [image2]: ./output_images/test1_undist.jpg "Road Transformed"
 [image3]: ./output_images/test2_binary.jpg "Binary Example"
-[image4]: ./examples/warped_straight_lines.jpg "Warp Example"
+[image4]: ./output_images/straight_lines1_warped.jpg "Warp Example"
 [image5]: ./examples/color_fit_lines.jpg "Fit Visual"
 [image6]: ./examples/example_output.jpg "Output"
 [video1]: ./project_video.mp4 "Video"
@@ -57,7 +57,7 @@ To demonstrate this step, I applied the camera calibration matrix and distortion
 
 #### 2. Describe how (and identify where in your code) you used color transforms, gradients or other methods to create a thresholded binary image.  
 
-I used a combination of color and gradient thresholds to generate a binary image. Function `get_binary` contains the steps I took. First, I convert the image from BGR color space into HLS color space using the `hls_select` function. For the H-channel, I applied a threshold of `(20, 100)`. For the L- and S-channel, I didn't apply a threshold but used its raw value as input to the gradient thresholding for the next step. Next, I apply perspective transform to focus on the region of the graph where the road is. I will describe the details of this step in the next point. Lastly, I apply Sobel gradient thresholding in the x-direction using the `abs_sobel_thresh` function. The two images that I apply grad-x thresholding on are the L- and S- channel layers and I use a kernel size of 21 and threshold values `(15, 100)`. 
+I used a combination of color and gradient thresholds to generate a binary image. Function `get_binary()` contains the steps I took. First, I convert the image from BGR color space into HLS color space using the `hls_select()` function. For the H-channel, I applied a threshold of `(20, 100)`. For the L- and S-channel, I didn't apply a threshold but used its raw value as input to the gradient thresholding for the next step. Next, I apply perspective transform to focus on the region of the graph where the road is. I will describe the details of this step in the next point. Lastly, I apply Sobel gradient thresholding in the x-direction using the `abs_sobel_thresh()` function. The two images that I apply grad-x thresholding on are the L- and S- channel layers and I use a kernel size of 21 and threshold values `(15, 100)`. 
 
 The output binary image is a combination of the pixels found in H-channel color thresholding, the S- and L-channel Sobel grad-x thresholding. Here's an example of my output for this step.
 
@@ -65,14 +65,14 @@ The output binary image is a combination of the pixels found in H-channel color 
 
 #### 3. Describe how (and identify where in your code) you performed a perspective transform and provide an example of a transformed image.
 
-The code for my perspective transform includes a function called `warper()`, which appears in lines 1 through 8 in the file `example.py` (output_images/examples/example.py) (or, for example, in the 3rd code cell of the IPython notebook).  The `warper()` function takes as inputs an image (`img`), as well as source (`src`) and destination (`dst`) points.  I chose the hardcode the source and destination points in the following manner:
+The code for my perspective transform includes a function called `warper()`, which appears in the code cell of the IPython notebook under title `Perspective Transform`.  The `warper()` function takes as inputs an image (`img`), as well as source (`src`) and destination (`dst`) points.  I chose the hardcode the source and destination points in the following manner:
 
 ```python
 src = np.float32(
-    [[(img_size[0] / 2) - 55, img_size[1] / 2 + 100],
-    [((img_size[0] / 6) - 10), img_size[1]],
-    [(img_size[0] * 5 / 6) + 60, img_size[1]],
-    [(img_size[0] / 2 + 55), img_size[1] / 2 + 100]])
+    [[(img_size[0] / 2) - 60, img_size[1] / 2 + 100],
+    [(img_size[0] / 6), img_size[1] - 10],
+    [(img_size[0] * 5 / 6), img_size[1] - 10],
+    [(img_size[0] / 2 + 62), img_size[1] / 2 + 100]])
 dst = np.float32(
     [[(img_size[0] / 4), 0],
     [(img_size[0] / 4), img_size[1]],
@@ -84,12 +84,14 @@ This resulted in the following source and destination points:
 
 | Source        | Destination   | 
 |:-------------:|:-------------:| 
-| 585, 460      | 320, 0        | 
-| 203, 720      | 320, 720      |
-| 1127, 720     | 960, 720      |
-| 695, 460      | 960, 0        |
+| 580, 460      | 320, 0        | 
+| 213, 710      | 320, 720      |
+| 1067, 710     | 960, 720      |
+| 702, 460      | 960, 0        |
 
-I verified that my perspective transform was working as expected by drawing the `src` and `dst` points onto a test image and its warped counterpart to verify that the lines appear parallel in the warped image.
+The transform matrix (M) and inverse transform matrix (Minv) are computed by calling `cv2.getPerspectiveTransform()` from `src` to `dst`, and from `dst` to `src`. The warped image is generated by calling `cv2.warpPerspective()` using the transform matrix.
+
+I verified that my perspective transform was working as expected by drawing the `src` and `dst` points onto a test image `./test_images/straight_lines1.jpg` and its warped counterpart to verify that the lines appear parallel in the warped image.
 
 ![alt text][image4]
 

@@ -20,7 +20,7 @@ The goals / steps of this project are the following:
 [image3]: ./output_images/test2_binary.jpg "Binary Example"
 [image4]: ./output_images/straight_lines1_warped.jpg "Warp Example"
 [image5]: ./output_images/test2_fit.jpg "Fit Visual"
-[image6]: ./examples/example_output.jpg "Output"
+[image6]: ./output_images/test2_final.jpg "Output"
 [video1]: ./project_video.mp4 "Video"
 
 ## [Rubric](https://review.udacity.com/#!/rubrics/571/view) Points
@@ -110,7 +110,7 @@ For the position of the vehicle with respect to the lane center, I assume that t
 
 #### 6. Provide an example image of your result plotted back down onto the road such that the lane area is identified clearly.
 
-I implemented this step in lines # through # in my code in `yet_another_file.py` in the function `map_lane()`.  Here is an example of my result on a test image:
+I implemented this step in `pipeline_function()` in the IPython notebook under the title `2.7 Lane Finder Class`. I create an image `color_warp` and use `cv2.fillPoly()` function to draw green shade on the region between the two lines I identified as lane lines. Then I use `cv2.warpPerspective()` function with the inverse perspective transform matrix `Minv` to cast the image back to the view from a camera. Finally, I combine this image with the original image using `cv2.addWaighted()` function and give the lane line shades a weight of 0.3 compared to 1. which is the weight of original image. Here is an example of my result on a test image:
 
 ![alt text][image6]
 

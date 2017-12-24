@@ -1,6 +1,4 @@
 ## Advanced Lane Finding project
----
-
 
 The goals / steps of this project are the following:
 
@@ -21,11 +19,9 @@ The goals / steps of this project are the following:
 [image4]: ./output_images/straight_lines1_warped.jpg "Warp Example"
 [image5]: ./output_images/test2_fit.jpg "Fit Visual"
 [image6]: ./output_images/test2_final.jpg "Output"
-[video1]: ./project_video.mp4 "Video"
+[video1]: ./project_video_with_lane.mp4 "Video"
 
-## [Rubric](https://review.udacity.com/#!/rubrics/571/view) Points
-
-### Here I will consider the rubric points individually and describe how I addressed each point in my implementation.  
+Here I will consider the [rubric points](https://review.udacity.com/#!/rubrics/571/view) individually and describe how I addressed each point in my implementation.  
 
 ---
 
@@ -120,7 +116,7 @@ I implemented this step in `pipeline_function()` in the IPython notebook under t
 
 #### 1. Provide a link to your final video output.  Your pipeline should perform reasonably well on the entire project video (wobbly lines are ok but no catastrophic failures that would cause the car to drive off the road!).
 
-Here's a [link to my video result](./project_video.mp4)
+Here's a [link to my video result](./project_video_with_lane.mp4)
 
 ---
 

@@ -19,7 +19,7 @@ The goals / steps of this project are the following:
 [image2]: ./output_images/test1_undist.jpg "Road Transformed"
 [image3]: ./output_images/test2_binary.jpg "Binary Example"
 [image4]: ./output_images/straight_lines1_warped.jpg "Warp Example"
-[image5]: ./examples/color_fit_lines.jpg "Fit Visual"
+[image5]: ./output_images/test2_fit.jpg "Fit Visual"
 [image6]: ./examples/example_output.jpg "Output"
 [video1]: ./project_video.mp4 "Video"
 
@@ -57,7 +57,7 @@ To demonstrate this step, I applied the camera calibration matrix and distortion
 
 #### 2. Describe how (and identify where in your code) you used color transforms, gradients or other methods to create a thresholded binary image.  
 
-I used a combination of color and gradient thresholds to generate a binary image. Function `get_binary()` contains the steps I took. First, I convert the image from BGR color space into HLS color space using the `hls_select()` function. For the H-channel, I applied a threshold of `(20, 100)`. For the L- and S-channel, I didn't apply a threshold but used its raw value as input to the gradient thresholding for the next step. Next, I apply perspective transform to focus on the region of the graph where the road is. I will describe the details of this step in the next point. Lastly, I apply Sobel gradient thresholding in the x-direction using the `abs_sobel_thresh()` function. The two images that I apply grad-x thresholding on are the L- and S- channel layers and I use a kernel size of 21 and threshold values `(15, 100)`. 
+I used a combination of color and gradient thresholds to generate a binary image. Function `get_binary()` in the code cell of the IPython notebook under the title `2.4 Binary Image` contains the steps I took. First, I convert the image from BGR color space into HLS color space using the `hls_select()` function. For the H-channel, I applied a threshold of `(20, 100)`. For the L- and S-channel, I didn't apply a threshold but used its raw value as input to the gradient thresholding for the next step. Next, I apply perspective transform to focus on the region of the graph where the road is. I will describe the details of this step in the next point. Lastly, I apply Sobel gradient thresholding in the x-direction using the `abs_sobel_thresh()` function. The two images that I apply grad-x thresholding on are the L- and S- channel layers and I use a kernel size of 21 and threshold values `(15, 100)`. 
 
 The output binary image is a combination of the pixels found in H-channel color thresholding, the S- and L-channel Sobel grad-x thresholding. Here's an example of my output for this step.
 
@@ -65,7 +65,7 @@ The output binary image is a combination of the pixels found in H-channel color 
 
 #### 3. Describe how (and identify where in your code) you performed a perspective transform and provide an example of a transformed image.
 
-The code for my perspective transform includes a function called `warper()`, which appears in the code cell of the IPython notebook under title `Perspective Transform`.  The `warper()` function takes as inputs an image (`img`), as well as source (`src`) and destination (`dst`) points.  I chose the hardcode the source and destination points in the following manner:
+The code for my perspective transform includes a function called `warper()`, which appears in the code cell of the IPython notebook under title `2.3 Perspective Transform`.  The `warper()` function takes as inputs an image (`img`), as well as source (`src`) and destination (`dst`) points.  I chose the hardcode the source and destination points in the following manner:
 
 ```python
 src = np.float32(
@@ -95,9 +95,10 @@ I verified that my perspective transform was working as expected by drawing the 
 
 ![alt text][image4]
 
-#### 4. Describe how (and identify where in your code) you identified lane-line pixels and fit their positions with a polynomial?
+#### 4. Describe how (and identify where in your code) you identified lane-line pixels and fit their positions with a polynomial.
 
-Then I did some other stuff and fit my lane lines with a 2nd order polynomial kinda like this:
+The code for identifying lane lines and fit a polynomial is a function called `fit_poly()`, which appears in the code cell of the IPython notebook under title `2.5 Fit a Polynominal`.  The `fit_poly()` function has two mode depending on the input `cold_start`: when `cold_start = True`, it identifies lane line centers by sliding window from bottom up and identify nonzero pixels around two peaks the lane line pixels; when `cold_start = False`, it needs polynominal coefficients as input and looks for lane lines in the margins of the input lane lines. After lane line pixels are identified with either method, I use `np.polyfit()` function to fit individually to left and right lanes a quadratic function.
+Fitting lane lines with a 2nd order polynomial of the `./test_images/test2.jpg` looks like this:
 
 ![alt text][image5]
 
